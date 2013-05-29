@@ -1,0 +1,13 @@
+TP Synthese
+- Objectif
+	- Réaliser le back office de Net_Articles : Net_Articles_BO
+- Fonctionnalités attendues
+	- Gestion des auteurs et articles (saisie, maj, suppr.)
+	- Gestion des parts de rédaction des articles par les auteurs (La somme de toutes les parts doit être égale à 100. Toutes les parts doivent être insérées, modifiées, ou supprimées en même temps)
+	- Calcul et affichage des droits perçus par les auteurs à la fin de chaque trimestre
+- Contraintes
+	- Sites développés à deux ou trois au plus
+	- Respect des bonnes pratiques
+- Restitution
+	- Deux fichiers zip nommés NOM1_[NOMx]_Net_Articles et NOM1_[NOMx]_Net_Articles_BO contenant le site complet (sauf les fichiers pdf) déposés dans spiral : ISI2_3A
+	- Date limite : 07/06/2013
