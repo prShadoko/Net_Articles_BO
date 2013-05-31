@@ -5,7 +5,7 @@ require_once 'controller/BootStrap.php';
 
 Sessions::start();
 
-BootStrap::initController();
+$controller = BootStrap::getController();
 ?>
 
 <!DOCTYPE html>
@@ -13,13 +13,15 @@ BootStrap::initController();
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
-		<title><?php echo BootStrap::getController()->getTitle(); ?></title>
+		<title><?php echo $controller->getTitle(); ?></title>
 	</head>
 	<body>
-
+		<h1><?php echo $controller->getTitle(); ?></h1>
+		
 		<?php //require_once 'view/' . BootSrap::getController()->getMenu() . '.php'; ?>
 		
-		<?php require_once 'view/' . BootStrap::getController()->getView() . '.php'; ?>
-		
+		<article>
+		<?php require_once 'view/' .$controller->getView() . '.php'; ?>
+		</article>
 	</body>
 </html>

@@ -3,10 +3,12 @@ class Request
 {
 	private $_controller;
 	private $_action;
+	private $_id;
 	
 	public function __construct() {
 		$this->_controller = 'Index';
 		$this->_action = 'default';
+		$this->_id = null;
 		
 		if(isset($_REQUEST['c'])) {
 			$this->_controller = $_REQUEST['c'];
@@ -14,6 +16,10 @@ class Request
 		
 		if(isset($_REQUEST['a'])) {
 			$this->_action = $_REQUEST['a'];
+		}
+		
+		if(isset($_REQUEST['id'])) {
+			$this->_id = $_REQUEST['id'];
 		}
 	}
 	
@@ -37,8 +43,36 @@ class Request
 		$this->_action = $action;
 	}
 	
-	public function getURL() {
-		return 'index.php?c='.$this->getController().'&a='.$this->getAction();
+	public function getId()
+	{
+		return $this->_id;
+	}
+	
+	public function setId($id)
+	{
+		$this->_id = $id;
+	}
+	
+	public function getURL($action = null, $id = null, $controller = null) {
+		
+		if(is_null($controller)){
+			$controller = $this->getController();
+		}
+		
+		if(is_null($action)){
+			$action = $this->getAction();
+		}
+		
+		if( is_null($id) ) {
+			$id = $this->getId();
+		}
+		if( isset($id) ) {
+			$id = '&id='.$id;
+		}
+		
+		$url = 'index.php?c='.$controller.'&a='.$action.$id;
+		
+		return $url;
 	}
 }
 ?>
