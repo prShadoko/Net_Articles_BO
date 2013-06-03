@@ -19,7 +19,7 @@ abstract class CRUDController extends Controller {
 				break;
 			
 			case 'delete':
-				
+				debug(BootStrap::getRequest()->getParameters());exit;
 				break;
 			
 			case 'read':

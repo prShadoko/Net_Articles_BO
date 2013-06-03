@@ -7,6 +7,7 @@ class BootStrap {
 	private static $_controller = null;
 	private static $_request = null;
 
+	
 	public static function getRequest()
 	{
 		if( is_null(self::$_request) ) {
@@ -38,6 +39,7 @@ class BootStrap {
 
 			self::$_controller = new $controllerClass();
 			self::$_controller->setView(lcfirst($name));
+			self::$_controller->setMenu("menu");
 			self::$_controller->run($action);
 		}
 		catch (Exception $ex) {

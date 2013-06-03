@@ -24,7 +24,7 @@ abstract class Controller {
 	}
 	
 	public function getTitle() {
-		return "Net_Articles_BO";
+		return "Net Articles BO";
 	}
 }
 

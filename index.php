@@ -18,7 +18,7 @@ $controller = BootStrap::getController();
 	<body>
 		<h1><?php echo $controller->getTitle(); ?></h1>
 		
-		<?php //require_once 'view/' . BootSrap::getController()->getMenu() . '.php'; ?>
+		<?php require_once 'view/' . $controller->getMenu() . '.php'; ?>
 		
 		<article>
 		<?php require_once 'view/' .$controller->getView() . '.php'; ?>
