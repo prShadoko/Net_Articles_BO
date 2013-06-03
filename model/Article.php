@@ -1,121 +1,100 @@
 <?php
+require_once 'persistance/DBUtils.php';
 
-/**
- * Description of Article
- *
- * @author 
- */
 class Article {
 
-	private $id_article;
-	private $resume;
-	private $id_domaine;
-	private $titre;
-	private $Prix;
-	private $date_publication;
-	private $fichier;
+	private $_idArticle;
+	private $_summary;
+	private $_idDomain;
+	private $_title;
+	private $_price;
+	private $_publicationDate;
+	private $_file;
 
-	public function dernierArticle() {
 
-		$req = "Select * from article where date_article = (
-	    select max(date_article) from article
-	    );";
+	public function read($idArticle) {
 
-		$rs = Db_Utils::lecture($req)->fetchAll();
-
-		$this->affecterValeur($rs[0]);
-	}
-
-	public function lireArticle($id_article) {
-
-		$req = "Select * from article where id_article = $id_article;";
-
-		$rs = Db_Utils::lecture($req)->fetchAll();
+		$req = new SQLRequest();
+		$req->setRequest('Select * from article where id_article = :id_article;');
+		$req->addParameter('id_article', $idArticle);
+		
+		$rs = DBUtils::read($req)->fetchAll(PDO::FETCH_ASSOC);
 
 		$this->affecterValeur($rs[0]);
 	}
 
-	private function affecterValeur($rs) {
-		$this->setId_article($rs['id_article']);
+	private function affectValue($rs) {
+		$this->setIdArticle($rs['id_article']);
 		$this->setResume($rs['resume']);
-		$this->setId_domaine($rs['id_domaine']);
-		$this->setTitre($rs['titre']);
-		$this->setPrix($rs['prix']);
-		$this->setDate_publication($rs['date_article']);
-		$this->setFichier($rs['fichier']);
+		$this->setIdDomaine($rs['id_domaine']);
+		$this->setTitle($rs['titre']);
+		$this->setPrice($rs['prix']);
+		$this->setPublicationDate($rs['date_article']);
+		$this->setFile($rs['fichier']);
 	}
 
-	public static function ListeArticlesPanier($panier) {
+	public static function readableArticleList() {
 		
-		$liste = implode(",", array_keys($panier));
-        
-		$req = "Select * from article where id_article IN ( $liste );";
+		$req = new SQLRequest();
+		$req->setRequest('Select id_article as id, id_domaine, titre, resume, prix, date_article, fichier from article;');
 		
-		/*$liste = Array();
-		
-		foreach($panier as $key => $value) {
-			$article = new Article();
-			$article->lireArticle($key);
-			$liste[] = $article;
-		}*/
-		
-		return Db_Utils::lecture($req)->fetchAll();
+		return DBUtils::read($req)->fetchAll(PDO::FETCH_ASSOC);
 	}
 	
-	public function getId_article() {
+	public function getIdArticle() {
 		return $this->id_article;
 	}
 
-	public function setId_article($id_article) {
-		$this->id_article = $id_article;
+	public function setIdArticle($idArticle) {
+		$this->_idArticle = $idArticle;
 	}
 
-	public function getResume() {
-		return $this->resume;
+	public function getSummary() {
+		return $this->_summary;
 	}
 
-	public function setResume($resume) {
-		$this->resume = $resume;
+	public function setSummary($summary) {
+		$this->_summary = $summary;
 	}
 
-	public function getId_domaine() {
-		return $this->id_domaine;
+	public function getIdDomaine() {
+		return $this->_idDomain;
 	}
 
-	public function setId_domaine($id_domaine) {
-		$this->id_domaine = $id_domaine;
+	public function setIdDomain($idDomain) {
+		$this->_idDomain = $idDomain;
 	}
 
-	public function getTitre() {
-		return $this->titre;
+	public function getTitle() {
+		return $this->_title;
 	}
 
-	public function setTitre($titre) {
-		$this->titre = $titre;
+	public function setTitle($title) {
+		$this->_title = $title;
 	}
 
-	public function getPrix() {
-		return $this->Prix;
+	public function getPrice() {
+		return $this->_price;
 	}
 
-	public function setPrix($Prix) {
-		$this->Prix = $Prix;
+	public function setPrix($price) {
+		$this->_price = $price;
 	}
 
-	public function getDate_publication() {
-		return $this->date_publication;
+	public function getPublicationDate() {
+		return $this->_publicationDate;
 	}
 
-	public function setDate_publication($date_publication) {
-		$this->date_publication = $date_publication;
+	public function setPublicationDate($publicationDate) {
+		$this->_publicationDate = $publicationDate;
 	}
 
-	public function getFichier() {
-		return $this->fichier;
+	public function getFile() {
+		return $this->_file;
 	}
 
-	public function setFichier($fichier) {
-		$this->fichier = $fichier;
+	public function setFile($file) {
+		$this->_file = $file;
 	}
 }
 

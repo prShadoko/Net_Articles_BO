@@ -1,6 +1,6 @@
 <?php
 
-require_once 'model/Request.php';
+require_once 'model/HTTPRequest.php';
 
 class BootStrap {
 
@@ -11,7 +11,7 @@ class BootStrap {
 	public static function getRequest()
 	{
 		if( is_null(self::$_request) ) {
-			self::$_request = new Request();
+			self::$_request = new HTTPRequest();
 		}
 		return self::$_request;
 

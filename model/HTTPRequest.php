@@ -1,5 +1,5 @@
 <?php
-class Request
+class HTTPRequest
 {
 	private $_controller;
 	private $_action;

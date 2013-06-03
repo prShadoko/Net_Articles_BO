@@ -10,6 +10,7 @@ class Db_Utils {
     private static function getConnexion() {
         $connexion = new PDO("mysql:host=localhost;dbname=net_articles", "root", "");
         $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$connexion->exec('SET CHARACTER SET utf8;');
 
         return $connexion;
     }
@@ -61,7 +62,7 @@ class Db_Utils {
         try {
             $connexion = self::getConnexion();
             if (!is_null($id_parametre)) {
-                //Appel a la proczedure stockée
+                //Appel a la proczedure stockï¿½e
                 $connexion->beginTransaction();
                 $prep = $connexion->prepare("Select inc_parametre(:param) as id");
                 $parametres = Array(":param" => $id_parametre);
@@ -76,7 +77,7 @@ class Db_Utils {
                 }
             }
 
-            //Exécuter toutes les requetes
+            //Exï¿½cuter toutes les requetes
             foreach ($requetes as $requete) {
                 $prep = $connexion->prepare($requete);
                 $prep->execute();

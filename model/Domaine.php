@@ -24,7 +24,7 @@ class Domaine {
 	$this->setLibdomaine($rs[0]['libdomaine']);
     }
     
-    public function getId_domaine() {
+    public function getIdDomaine() {
 	return $this->id_domaine;
     }
 

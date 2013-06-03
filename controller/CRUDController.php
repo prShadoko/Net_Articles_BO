@@ -4,7 +4,6 @@ require_once 'Controller.php';
 
 abstract class CRUDController extends Controller {
 	
-	private $_header;
 	private $_rows;
 	
 	public function run($action) {
@@ -23,26 +22,18 @@ abstract class CRUDController extends Controller {
 				break;
 			
 			case 'read':
-				$this->defineHeader();
 				$this->defineRows();
 				break;
 			
 			default:
 				$this->setView('read');
-				$this->defineHeader();
 				$this->defineRows();
 				break;
 		}
 	}
 	
-	protected abstract function defineHeader();
-	
-	protected function setHeader($header) {
-		$this->_header = $header;
-	}
-	
 	public function getHeader() {
-		return $this->_header;
+		return array_keys($this->_rows[0]);
 	}
 	
 	protected abstract function defineRows();

@@ -10,17 +10,21 @@
 		echo '<tr>';
 		echo '<th></th>';
 		foreach($header as $value) {
-			echo '<th>'.$value.'</th>';
+			if($value != 'id') {
+				echo '<th>'.$value.'</th>';
+			}
 		}
 		echo '</tr>';
 
 		foreach($rows as $row) {
 			echo '<tr>';
-			echo '<td><input type="checkbox" name="id[]" value="'.$row[0].'"/></td>';
-			foreach ($row as $value) {
-				echo '<td>' . $value . '</td>';
+			echo '<td><input type="checkbox" name="id[]" value="'.$row['id'].'"/></td>';
+			foreach ($row as $key => $value) {
+				if($key != 'id') {
+					echo '<td>' . $value . '</td>';
+				}
 			}
-			echo '<td><a href="'.  BootStrap::getRequest()->getURL(null, 'update',Array('id'=>$row[0])).'">update</a></td>';
+			echo '<td><a href="'.  BootStrap::getRequest()->getURL(null, 'update',Array('id'=>$row['id'])).'">update</a></td>';
 			echo '</tr>';
 		}
 

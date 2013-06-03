@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Utils/Requete.php';
+require_once 'persistance/SQLRequest.php';
 
 /**
  * Description of DBUtils
@@ -10,33 +10,33 @@ require_once 'Utils/Requete.php';
 class DBUtils
 {
 
-	private static function getConnexion()
+	private static function getConnection()
 	{
 		try
 		{
-			$connexion = new PDO('mysql:host=localhost;dbname=net_articles', 'mod', 'mod');
-			$connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			$connexion->exec('SET CHARACTER SET utf8;');
-			return $connexion;
+			$connection = new PDO('mysql:host=localhost;dbname=net_articles', 'mod', 'mod');
+			$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$connection->exec('SET CHARACTER SET utf8;');
+			return $connection;
 		} catch(Exception $e)
 		{
-			$connexion = null;
+			$connection = null;
 			throw $e;
 		}
 	}
 
-	public static function Lecture(Requete $requete)
+	public static function read(SQLRequest $requete)
 	{
 		try
 		{
-			$connexion = self::getConnexion();
-			$prep = $connexion->prepare($requete->getRequete());
-			$prep->execute($requete->getParametres());
-			$connexion = null;
+			$connection = self::getConnection();
+			$prep = $connection->prepare($requete->getRequest());
+			$prep->execute($requete->getParameters());
+			$connection = null;
 			return $prep;
 		} catch(Exception $e)
 		{
-			$connexion = null;
+			$connection = null;
 			throw $e;
 		}
 	}
@@ -67,15 +67,15 @@ class DBUtils
 					$requetes = $transaction->getRequetes();
 					foreach($requetes as &$requete)
 					{
-						$requete->ajouterParametre('id', $id);
+						$requete->addParameter('id', $id);
 					}
 				}
 			}
 			unset($requete);
 			foreach($transaction->getRequetes() as $requete)
 			{
-				$prep = $connexion->prepare($requete->getRequete());
-				$prep->execute($requete->getParametres());
+				$prep = $connexion->prepare($requete->getRequest());
+				$prep->execute($requete->getParameters());
 			}
 			$connexion->commit();
 			$connexion = null;
