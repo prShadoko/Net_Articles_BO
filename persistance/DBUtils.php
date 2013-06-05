@@ -1,5 +1,6 @@
 <?php
 
+require_once 'persistance/Transaction.php';
 require_once 'persistance/SQLRequest.php';
 
 /**
@@ -43,52 +44,48 @@ class DBUtils
 
 	/**
 	 *
-	 * @param <array(Requete)> $requetes
-	 * @param <String> $id_parametre
+	 * @param <array(Requete)> $requests
+	 * @param <String> $idParameter
 	 * @return type
 	 * @throws MonException
 	 */
-	static public function Transaction(Transaction $transaction, $id_parametre = null)
+	static public function Transaction(Transaction $transaction, $idParameter = null)
 	{
 		try
 		{
 			$id = null;
-			$connexion = self::getConnexion();
-			$connexion->beginTransaction();
-			if(!is_null($id_parametre))
+			$connection = self::getConnection();
+			$connection->beginTransaction();
+			if(!is_null($idParameter))
 			{
-				$prep = $connexion->prepare('SELECT inc_parametre(:param) AS `id`');
-				$parametres = array('param' => $id_parametre);
-				$prep->execute($parametres);
+				$prep = $connection->prepare('SELECT inc_parametre(:param) AS `id`');
+				$parameters = array('param' => $idParameter);
+				$prep->execute($parameters);
 				$res = $prep->fetch(PDO::FETCH_ASSOC);
 				if($res !== false)
 				{
 					$id = $res['id'];
-					$requetes = $transaction->getRequetes();
-					foreach($requetes as &$requete)
+					$requests = $transaction->getRequest();
+					foreach($requests as &$request)
 					{
-						$requete->addParameter('id', $id);
+						$request->addParameter('id', $id);
 					}
 				}
 			}
-			unset($requete);
-			foreach($transaction->getRequetes() as $requete)
+			unset($request);
+			foreach($transaction->getRequest() as $request)
 			{
-				$prep = $connexion->prepare($requete->getRequest());
-				$prep->execute($requete->getParameters());
+				$prep = $connection->prepare($request->getRequest());
+				$prep->execute($request->getParameters());
 			}
-			$connexion->commit();
-			$connexion = null;
+			$connection->commit();
+			$connection = null;
 			return $id; //Might be uninitialized
-		} catch(MonException $me)
-		{
-			$connexion->rollback();
-			$connexion = null;
 		} catch(Exception $e)
 		{
-			$connexion->rollback();
-			$connexion = null;
-			throw new MonException($e);
+			$connection->rollback();
+			$connection = null;
+			throw $e;
 		}
 	}
 }

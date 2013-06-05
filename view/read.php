@@ -21,6 +21,11 @@
 			echo '<td><input type="checkbox" name="id[]" value="'.$row['id'].'"/></td>';
 			foreach ($row as $key => $value) {
 				if($key != 'id') {
+					//*
+					if(strlen($value) > 200) {
+						$value = substr($value, 0, 196) . "...";
+					}
+					//*/
 					echo '<td>' . $value . '</td>';
 				}
 			}

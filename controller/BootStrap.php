@@ -30,42 +30,42 @@ class BootStrap {
 	public static function initController() {
 		$request = self::getRequest();
 		try {
-			self::includeController();
-			
 			$name = $request->getController();
 			$action = $request->getAction();
 
+			self::includeController($name);
+			
 			$controllerClass = $name . "Controller";
 
 			self::$_controller = new $controllerClass();
 			self::$_controller->setView(lcfirst($name));
-			self::$_controller->setMenu("menu");
 			self::$_controller->run($action);
 		}
 		catch (Exception $ex) {
 			//TODO: Error management
-			if( $request->getController() == 'Error' ) {
+			/*if( $request->getController() == 'Error' ) {
 				header("HTTP/1.0 404 Not Found");
 				echo 'Error 404 - Page not found';
 				exit;
-			}
+			}*/
 			
-			$request->setController('Error');
-			$request->setAction('404');
-			Sessions::setError($ex);
-			header('location: '.$request->getURL());
-			exit;
+			self::includeController('Error');
+			self::$_controller = new ErrorController();
+			self::$_controller->setView('error');
+			self::$_controller->setError($ex);
+			self::$_controller->run($ex->getCode());
 		}
+	
+		self::$_controller->setMenu("menu");
 	}
 	
-	public static function includeController() {
-		$request = self::getRequest();
+	public static function includeController($controller) {
 		
-		if(file_exists('controller/'. $request->getController() .'Controller.php')) {
-			require_once 'controller/'. $request->getController() .'Controller.php';
+		if(file_exists('controller/'. $controller .'Controller.php')) {
+			require_once 'controller/'. $controller .'Controller.php';
 		}
 		else {
-			throw new InvalidArgumentException('"'.$request->getController().'" n\'est pas un controleur valide.');
+			throw new InvalidArgumentException('"'.$controller.'" n\'est pas un controleur valide.', 404, null);
 		}
 	}
 }

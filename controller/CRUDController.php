@@ -10,11 +10,16 @@ abstract class CRUDController extends Controller {
 		$this->setView($action);
 		switch ($action) {
 			case 'create':
-				
+				$this->create();
 				break;
 			
 			case 'update':
-				
+				$request = BootStrap::getRequest();
+				$parameters = $request->getParameters();
+				if(!isset($parameters['id'])) {
+					throw new InvalidArgumentException('L\'id n\'est pas définie');
+				}
+				$this->update($parameters['id']);
 				break;
 			
 			case 'delete':
@@ -37,6 +42,10 @@ abstract class CRUDController extends Controller {
 	}
 	
 	protected abstract function defineRows();
+	
+	protected abstract function create();
+	
+	protected abstract function update($id);
 	
 	protected function setRows($rows) {
 		$this->_rows = $rows;

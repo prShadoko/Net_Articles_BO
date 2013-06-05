@@ -2,18 +2,18 @@
 
 class Transaction {
 
-	private $requetes;
+	private $_request;
 
 	function __construct() {
-		$this->requetes = array();
+		$this->_request = array();
 	}
 
-	public function ajouterRequete(Requete $req) {
-		$this->requetes[] = $req;
+	public function addRequest(SQLRequest $req) {
+		$this->_request[] = $req;
 	}
 
-	public function getRequetes() {
-		return $this->requetes;
+	public function getRequest() {
+		return $this->_request;
 	}
 
 }
