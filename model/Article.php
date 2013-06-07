@@ -57,18 +57,31 @@ class Article {
 		DBUtils::Transaction($transaction);
 	}
 	
-	public static function readableArticleList() {
+	public static function readableArticleList($start, $length) {
 		
 		$req = new SQLRequest();
 		$req->setRequest(
 			'Select a.id_article as id, d.lib_domaine as domaine, a.titre, a.resume, a.prix, a.date_article as "date article", a.fichier 
 			from article a
-			join domaine d on d.id_domaine = a.id_domaine;'
+			join domaine d on d.id_domaine = a.id_domaine
+			limit '.$start.', '.$length.';'
 			);
 		
 		return DBUtils::read($req)->fetchAll(PDO::FETCH_ASSOC);
 	}
 	
+	public static function getArticleCount() {
+		$req = new SQLRequest();
+		$req->setRequest(
+			'Select count(*) 
+			from article;'
+			);
+		
+		$rs = DBUtils::read($req)->fetchAll(PDO::FETCH_NUM);
+		return $rs[0][0];
+	}
+
+
 	public function getId() {
 		return $this->_id;
 	}

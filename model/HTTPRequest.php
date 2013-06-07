@@ -43,15 +43,16 @@ class HTTPRequest
 		$this->_action = $action;
 	}
 	
-	/*public function getId()
+	public function getPage()
 	{
-		return $this->_id;
+		$page = 1;
+		
+		if(isset($_REQUEST['page']) && is_numeric($_REQUEST['page']) && $_REQUEST['page'] > 0){
+			$page = $_REQUEST['page'];
+		}
+		
+		return $page;
 	}
-	
-	public function setId($id)
-	{
-		$this->_id = $id;
-	}*/
 	
 	public function getParameters() {
 		return $_REQUEST;

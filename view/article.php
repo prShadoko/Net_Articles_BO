@@ -38,3 +38,15 @@ $domainList = $controller->getDomainList();
 	<input type="reset" value="Vider" />
 	<input type="submit" name="submit" value="Envoyer" />
 </form>
+
+<article>
+	<?php
+	
+	if(!$controller->isValidForm()){
+		require_once 'formError.php';
+	}
+	else {
+		echo '<p>L\'article à été enregistré.</p>';
+	}
+	?>
+</article>
