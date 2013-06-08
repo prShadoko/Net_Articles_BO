@@ -18,7 +18,7 @@
 
 		foreach($rows as $row) {
 			echo '<tr>';
-			echo '<td><input type="checkbox" name="id[]" value="'.$row['id'].'"/></td>';
+			echo '<td><input type="checkbox" name="ids[]" value="'.$row['id'].'"/></td>';
 			foreach ($row as $key => $value) {
 				if($key != 'id') {
 					//*

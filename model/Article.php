@@ -25,8 +25,8 @@ class Article {
 		$this->affectValue($rs[0]);
 	}
 
-	public function affectValue($rs) {
-		$this->setId($rs['id']);
+	public function affectValue($rs){
+		$this->setId(isset($rs['id'])?$rs['id']:null);
 		$this->setSummary($rs['summary']);
 		$this->setIdDomain($rs['idDomain']);
 		$this->setTitle($rs['title']);
@@ -37,13 +37,25 @@ class Article {
 	
 	public function updateDB() {
 		
+		$idParameter = null;
 		$req = new SQLRequest();
-		$req->setRequest(
-			'UPDATE article
-			SET id_domaine=:idDomain, resume=:summary, titre=:title, prix=:price, date_article=:publicationDate, fichier=:file
-			WHERE id_article=:id;'
-			);
-		$req->addParameter('id', $this->_id);
+		
+		if(is_null($this->getId())) {
+			$req->setRequest(
+				'insert into article (id_article, id_domaine, resume, titre, prix, date_article, fichier)
+				VALUES(:id, :idDomain, :summary, :title, :price, :publicationDate, :file);'
+				);
+			$idParameter = 'article';
+		}
+		else {
+			$req->setRequest(
+				'UPDATE article
+				SET id_domaine=:idDomain, resume=:summary, titre=:title, prix=:price, date_article=:publicationDate, fichier=:file
+				WHERE id_article=:id;'
+				);
+			$req->addParameter('id', $this->_id);
+		}
+		
 		$req->addParameter('idDomain', $this->_idDomain);
 		$req->addParameter('summary', $this->_summary);
 		$req->addParameter('title', $this->_title);
@@ -54,10 +66,10 @@ class Article {
 		$transaction = new Transaction();
 		$transaction->addRequest($req);
 		
-		DBUtils::Transaction($transaction);
+		DBUtils::transaction($transaction, $idParameter);
 	}
 	
-	public static function readableArticleList($start, $length) {
+	public static function readableList($start, $length) {
 		
 		$req = new SQLRequest();
 		$req->setRequest(
@@ -68,6 +80,41 @@ class Article {
 			);
 		
 		return DBUtils::read($req)->fetchAll(PDO::FETCH_ASSOC);
+	}
+	
+	public static function titleAndDateList($ids) {
+
+		$req = new SQLRequest();
+		$req->setRequest(
+			'Select id_article as id, titre, date_article as "Date de publication"
+			from article
+			where id_article IN ('. self::idsToString($ids) .');'
+			);
+		
+		return DBUtils::read($req)->fetchAll(PDO::FETCH_ASSOC);
+	}
+	
+	public static function delete($ids) {
+		
+		$req = new SQLRequest();
+		$req->setRequest(
+			'delete from article
+			where id_article IN ('.  self::idsToString($ids) .');'
+			);
+		
+		$transaction = new Transaction();
+		$transaction->addRequest($req);
+		
+		DBUtils::transaction($transaction);
+	}
+	
+	public static function idsToString($ids) {
+		$idList = "";
+		foreach($ids as $id){
+			$idList .= $id.', ';
+		}
+		
+		return substr($idList, 0, strlen($idList)-2);
 	}
 	
 	public static function getArticleCount() {

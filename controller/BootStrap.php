@@ -38,7 +38,7 @@ class BootStrap {
 			$controllerClass = $name . "Controller";
 
 			self::$_controller = new $controllerClass();
-			self::$_controller->setView(lcfirst($name));
+			self::$_controller->setView($name);//lcfirst($name));
 			self::$_controller->run($action);
 		}
 		catch (Exception $ex) {

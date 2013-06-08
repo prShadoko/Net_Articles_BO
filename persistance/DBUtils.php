@@ -49,19 +49,22 @@ class DBUtils
 	 * @return type
 	 * @throws MonException
 	 */
-	static public function Transaction(Transaction $transaction, $idParameter = null)
+	static public function transaction(Transaction $transaction, $idParameter = null)
 	{
 		try
 		{
 			$id = null;
+			
 			$connection = self::getConnection();
 			$connection->beginTransaction();
+				
 			if(!is_null($idParameter))
 			{
 				$prep = $connection->prepare('SELECT inc_parametre(:param) AS `id`');
 				$parameters = array('param' => $idParameter);
 				$prep->execute($parameters);
 				$res = $prep->fetch(PDO::FETCH_ASSOC);
+				
 				if($res !== false)
 				{
 					$id = $res['id'];

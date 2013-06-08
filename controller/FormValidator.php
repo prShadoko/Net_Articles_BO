@@ -4,9 +4,11 @@ class FormValidator {
 
 	private $_validators;
 	private $_errors;
+	private $_isValid;
 
 	public function __construct() {
 		$this->_validators = Array();
+		$this->_isValid = false;
 	}
 
 	public function addValidator($name, $validator, $message) {
@@ -15,26 +17,26 @@ class FormValidator {
 
 	public function validate($values) {
 
-		$isValid = true;
+		$this->_isValid = true;
 
 		foreach ($this->_validators as $name => $validators) {
 			foreach ($validators as $validator) {
 				
 				if(!isset($values[$name])){
-					$isValid = false;
+					$this->_isValid = false;
 					$this->addError('"'.$name.'" n\'est pas définie.');
 				}
 				else {
 					switch($validator['type']){
 						case 'number':
 							if(!$this->isNumber($values[$name])) {
-								$isValid = false;
+								$this->_isValid = false;
 								$this->addError($validator['message']);
 							}
 							break;
 						case 'date':
 							if(!$this->isDate($values[$name])) {
-								$isValid = false;
+								$this->_isValid = false;
 								$this->addError($validator['message']);
 							}
 							break;
@@ -42,8 +44,8 @@ class FormValidator {
 				}
 			}
 		}
-
-		return $isValid;
+		
+		return $this->_isValid;
 	}
 
 	public function isNumber($var) {
@@ -63,6 +65,10 @@ class FormValidator {
 	
 	public function getErrors() {
 		return $this->_errors;
+	}
+	
+	public function isValid() {
+		return $this->_isValid;
 	}
 }
 

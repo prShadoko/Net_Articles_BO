@@ -3,8 +3,12 @@ $requete = BootStrap::getRequest();
 $controller = BootStrap::getController();
 $article = $controller->getArticle();
 $domainList = $controller->getDomainList();
+$urlParam = Array();
+if(!is_null($article->getId())) {
+	$urlParam['id'] = $article->getId();
+}
 ?>
-<form action="<?php echo $requete->getURL(null, null, Array('id' => $article->getId())); ?>" method="POST">
+<form action="<?php echo $requete->getURL(null, null, $urlParam); ?>" method="POST">
 	<label>Domaine :</label>
 	<select name="idDomain">
 		<?php 
@@ -39,14 +43,17 @@ $domainList = $controller->getDomainList();
 	<input type="submit" name="submit" value="Envoyer" />
 </form>
 
-<article>
+
+<p>
+	<ul>
 	<?php
+	$messages = BootStrap::getController()->getUserMessages();
 	
-	if(!$controller->isValidForm()){
-		require_once 'formError.php';
-	}
-	else {
-		echo '<p>L\'article à été enregistré.</p>';
+	if(isset($messages)) {
+		foreach ($messages as $m) {
+			echo '<li>'.$m.'</li>';
+		}
 	}
 	?>
-</article>
+	</ul>
+</p>
