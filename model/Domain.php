@@ -1,4 +1,5 @@
 <?php
+require_once 'persistence/DBUTils.php';
 
 /**
  * Description of Domaine

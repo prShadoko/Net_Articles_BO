@@ -1,5 +1,5 @@
 <?php
-require_once 'persistance/DBUtils.php';
+require_once 'persistence/DBUtils.php';
 require_once 'CRUDTable.php';
 
 class Article implements CRUDTable {

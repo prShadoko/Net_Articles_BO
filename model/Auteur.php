@@ -1,5 +1,5 @@
 <?php
-require_once 'persistance/DBUTils.php';
+require_once 'persistence/DBUTils.php';
 require_once 'CRUDTable.php';
 
 

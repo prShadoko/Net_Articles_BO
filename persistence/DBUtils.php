@@ -1,7 +1,7 @@
 <?php
 
-require_once 'persistance/Transaction.php';
-require_once 'persistance/SQLRequest.php';
+require_once 'persistence/Transaction.php';
+require_once 'persistence/SQLRequest.php';
 
 class DBUtils
 {
