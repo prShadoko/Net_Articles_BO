@@ -3,14 +3,14 @@
 require_once 'persistance/Transaction.php';
 require_once 'persistance/SQLRequest.php';
 
-/**
- * Description of DBUtils
- *
- * @author
- */
 class DBUtils
 {
 
+	/**
+	 * Get the connection to the DB.
+	 * @return PDO The connection.
+	 * @throws Exception Throw an exception if there are any problem with the DB.
+	 */
 	private static function getConnection()
 	{
 		try
@@ -26,13 +26,19 @@ class DBUtils
 		}
 	}
 
-	public static function read(SQLRequest $requete)
+	/**
+	 * Prepare a reading SQL request.
+	 * @param SQLRequest $request The request to prepare.
+	 * @return PDOStatement The preparation.
+	 * @throws Exception Throw an exception if there are problem with the request.
+	 */
+	public static function read(SQLRequest $request)
 	{
 		try
 		{
 			$connection = self::getConnection();
-			$prep = $connection->prepare($requete->getRequest());
-			$prep->execute($requete->getParameters());
+			$prep = $connection->prepare($request->getRequest());
+			$prep->execute($request->getParameters());
 			$connection = null;
 			return $prep;
 		} catch(Exception $e)
@@ -43,11 +49,12 @@ class DBUtils
 	}
 
 	/**
-	 *
-	 * @param <array(Requete)> $requests
-	 * @param <String> $idParameter
+	 * Execute a transaction with the DB. A transaction execute some writing request.
+	 * If a request fail, the transaction do a rollback.
+	 * @param Transaction $transaction
+	 * @param type $idParameter
 	 * @return type
-	 * @throws MonException
+	 * @throws Exception
 	 */
 	static public function transaction(Transaction $transaction, $idParameter = null)
 	{
@@ -68,7 +75,7 @@ class DBUtils
 				if($res !== false)
 				{
 					$id = $res['id'];
-					$requests = $transaction->getRequest();
+					$requests = $transaction->getRequests();
 					foreach($requests as &$request)
 					{
 						$request->addParameter('id', $id);
@@ -76,7 +83,7 @@ class DBUtils
 				}
 			}
 			unset($request);
-			foreach($transaction->getRequest() as $request)
+			foreach($transaction->getRequests() as $request)
 			{
 				$prep = $connection->prepare($request->getRequest());
 				$prep->execute($request->getParameters());
