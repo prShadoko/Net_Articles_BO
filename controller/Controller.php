@@ -4,8 +4,10 @@
 
 abstract class Controller {
 	
+	private $_name;
 	private $_menu;
 	private $_view;
+	private $_title;
 	
 	public abstract function run($action);
 	
@@ -25,8 +27,20 @@ abstract class Controller {
 		return $this->_view;
 	}
 	
+	public function setName($name) {
+		$this->_name = $name;
+	}
+	
+	public function getName() {
+		return $this->_name;
+	}
+	
+	public function setTitle($title) {
+		$this->_title = $title;
+	}
+	
 	public function getTitle() {
-		return "Net Articles BO";
+		return $this->_title;
 	}
 }
 

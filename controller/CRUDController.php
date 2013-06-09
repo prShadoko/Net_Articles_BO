@@ -10,11 +10,18 @@ abstract class CRUDController extends Controller {
 	private $_pageCount;
 	private $_isValid;
 	private $_userMessages;
+	private $_form;
+	
+	public static $length = 6;
 
 	public function run($action) {
 
+		$this->setView($action);
+		$this->setForm($this->getName());
+		
 		switch ($action) {
 			case 'create':
+				$this->setView('form');
 				$this->create();
 				break;
 
@@ -24,6 +31,7 @@ abstract class CRUDController extends Controller {
 				  if(!isset($parameters['id'])) {
 				  throw new InvalidArgumentException('L\'id n\'est pas définie');
 				  } */
+				$this->setView('form');
 				$this->update(/* $parameters['id'] */);
 				break;
 
@@ -40,21 +48,20 @@ abstract class CRUDController extends Controller {
 				break;
 			
 			default:
+				$action = 'read';
+				$this->setView($action);
 				$this->read();
 				break;
 		}
 	}
 
-	public function getHeader() {
-		return array_keys($this->_rows[0]);
-	}
-
 	protected function read() {
 		
-		$this->setView('read');
+		//$this->setView('read');
 		$this->_pageCount = $this->definePageCount();
 		$this->initPagination();
-		$this->_rows = $this->defineRows();
+
+		$this->_rows = $this->defineRows(($this->getPage() - 1) * self::$length, self::$length);
 	}
 
 	protected function create() {
@@ -113,7 +120,7 @@ abstract class CRUDController extends Controller {
 	}
 	
 	protected function delete() {
-		$this->setView('delete');
+		//$this->setView('delete');
 		$request = BootStrap::getRequest();
 		$params = $request->getParameters();
 		
@@ -131,6 +138,26 @@ abstract class CRUDController extends Controller {
 
 	}
 
+	protected abstract function defineRows($start, $length);
+
+	protected abstract function definePageCount();
+
+	protected abstract function updateDB();
+
+	protected abstract function updateModelById($id);
+
+	protected abstract function updateModelByRequest($params);
+
+	protected abstract function initModel();
+
+	protected abstract function createValidator();
+	
+	protected abstract function defineDeletedRows($ids);
+	
+	protected abstract function deleteRows($ids);
+	
+	protected abstract function getDataId();
+
 	private function formSubmission($params) {
 		$this->updateModelByRequest($params);
 
@@ -141,35 +168,11 @@ abstract class CRUDController extends Controller {
 			//$this->_article->updateDB();
 			$this->updateDB();
 			//$this->_userMessages[] = 'L\'article a correctement été enregistré.';
-			$this->_userMessages[] = $this->getUserConfirmationMessage();
+			$this->_userMessages[] = $validator->getConfirmMessage();
 		} else {
 			$this->_userMessages = $validator->getErrors();
 		}
 	}
-
-	protected abstract function defineRows();
-
-	protected abstract function definePageCount();
-
-	/* protected abstract function create();
-
-	  protected abstract function update($id); */
-
-	protected abstract function updateDB();
-
-	protected abstract function updateModelById($id);
-
-	protected abstract function updateModelByRequest($params);
-
-	protected abstract function initModel();
-
-	protected abstract function getUserConfirmationMessage();
-
-	protected abstract function createValidator();
-	
-	protected abstract function defineDeletedRows($ids);
-	
-	protected abstract function deleteRows($ids);
 
 	public function isConfirmForm() {
 		$params = BootStrap::getRequest()->getParameters();
@@ -191,6 +194,10 @@ abstract class CRUDController extends Controller {
 
 	public function getUserMessages() {
 		return $this->_userMessages;
+	}
+
+	public function getHeader() {
+		return array_keys($this->_rows[0]);
 	}
 
 	protected function setRows($rows) {
@@ -217,6 +224,13 @@ abstract class CRUDController extends Controller {
 		$this->_page = $page;
 	}
 
+	public function getForm() {
+		return $this->_form;
+	}
+	
+	public function setForm($form) {
+		$this->_form = $form;
+	}
 }
 
 ?>

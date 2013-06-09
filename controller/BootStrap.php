@@ -38,6 +38,8 @@ class BootStrap {
 			$controllerClass = $name . "Controller";
 
 			self::$_controller = new $controllerClass();
+			self::$_controller->setTitle('Net Articles BO');
+			self::$_controller->setName($name);
 			self::$_controller->setView($name);//lcfirst($name));
 			self::$_controller->run($action);
 		}
@@ -51,12 +53,13 @@ class BootStrap {
 			
 			self::includeController('Error');
 			self::$_controller = new ErrorController();
+			self::$_controller->setTitle('Erreur - Net Articles BO');
 			self::$_controller->setView('error');
 			self::$_controller->setError($ex);
 			self::$_controller->run($ex->getCode());
 		}
 	
-		self::$_controller->setMenu("menu");
+		self::$_controller->setMenu('menu');
 	}
 	
 	public static function includeController($controller) {

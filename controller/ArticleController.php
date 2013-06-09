@@ -11,15 +11,9 @@ class ArticleController extends CRUDController {
 	//private $_userMessages;
 	//private $_isValid;
 
-	public static $length = 6;
+	protected function defineRows($start, $length) {
 
-	protected function defineRows() {
-
-		$page = $this->getPage();
-
-		$start = ($page - 1) * self::$length;
-
-		$rows = Article::readableList($start, self::$length);
+		$rows = Article::readableList($start, $length);
 
 		return $rows;
 	}
@@ -27,9 +21,6 @@ class ArticleController extends CRUDController {
 	protected function definePageCount() {
 
 		$pageCount = ceil(Article::getArticleCount() / self::$length);
-		/* if($page > $pageCount) {
-		  $page = $pageCount;
-		  } */
 
 		return $pageCount;
 	}
@@ -94,6 +85,7 @@ class ArticleController extends CRUDController {
 	public function createValidator() {
 		$validator = new FormValidator();
 
+		$validator->setConfirmMessage('L\'article a correctement été enregistrer.');
 		$validator->addValidator('price', 'number', 'Le prix doit être un nombre.');
 		$validator->addValidator('publicationDate', 'date', 'La date de parution doit être une date valide de la forme YYYY-mm-dd.');
 
@@ -118,9 +110,9 @@ class ArticleController extends CRUDController {
 		return $this->_domainList;
 	}
 
-	protected function getUserConfirmationMessage() {
+	/*protected function getUserConfirmationMessage() {
 		return 'L\'article a correctement été enregistré.';
-	}
+	}*/
 
 	protected function initModel() {
 		
@@ -142,16 +134,16 @@ class ArticleController extends CRUDController {
 	}
 
 	protected function defineDeletedRows($ids) {
-		return $rows = Article::titleAndDateList($ids);
+		return $rows = Article::significantFieldList($ids);
 	}
 
 	protected function deleteRows($ids) {
 		Article::delete($ids);
 	}
 
-	/* public function getUserMessages() {
-	  return $this->_userMessages;
-	  } */
+	public function getDataId() {
+		return $this->_article->getId();
+	}
 
 
 	/* public function setError($error) {

@@ -1,7 +1,8 @@
 <?php
 require_once 'persistance/DBUtils.php';
+require_once 'CRUDTable.php';
 
-class Article {
+class Article implements CRUDTable {
 
 	private $_id;
 	private $_summary;
@@ -82,7 +83,7 @@ class Article {
 		return DBUtils::read($req)->fetchAll(PDO::FETCH_ASSOC);
 	}
 	
-	public static function titleAndDateList($ids) {
+	public static function significantFieldList($ids) {
 
 		$req = new SQLRequest();
 		$req->setRequest(
