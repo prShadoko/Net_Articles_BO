@@ -108,7 +108,42 @@ class Article implements CRUDTable {
 	}
 	
 	public static function delete($ids) {
+            //Suppression des tuples achete impliquand les article à supprimer
+                $req = new SQLRequest();
+		$req->setRequest(
+			'delete from achete
+			where id_article IN ('.  self::idsToString($ids) .');'
+			);
+		$transaction = new Transaction();
+		$transaction->addRequest($req);
 		
+		DBUtils::transaction($transaction);
+                
+              //Suppression des tuples achete impliquant les article à supprimer
+                $req = new SQLRequest();
+		$req->setRequest(
+			'delete from achete
+			where id_article IN ('.  self::idsToString($ids) .');'
+			);
+		$transaction = new Transaction();
+		$transaction->addRequest($req);
+		
+		DBUtils::transaction($transaction);
+                
+                //Suppression des tuples redige impliquant les article à supprimer
+                $req = new SQLRequest();
+		$req->setRequest(
+			'delete from redige
+			where id_article IN ('.  self::idsToString($ids) .');'
+			);
+		$transaction = new Transaction();
+		$transaction->addRequest($req);
+		
+		DBUtils::transaction($transaction);
+                    
+                
+            
+            //Suppression des articles    
 		$req = new SQLRequest();
 		$req->setRequest(
 			'delete from article
