@@ -119,19 +119,7 @@ class Article implements CRUDTable {
 		
 		DBUtils::transaction($transaction);
                 
-              //Suppression des tuples achete impliquant les article à supprimer
-                $req = new SQLRequest();
-		$req->setRequest(
-			'delete from achete
-			where id_article IN ('.  self::idsToString($ids) .');'
-			);
-		$transaction = new Transaction();
-		$transaction->addRequest($req);
-		
-		DBUtils::transaction($transaction);
-                
                 //Suppression des tuples redige impliquant les article à supprimer
-                $req = new SQLRequest();
 		$req->setRequest(
 			'delete from redige
 			where id_article IN ('.  self::idsToString($ids) .');'
@@ -144,7 +132,6 @@ class Article implements CRUDTable {
                 
             
             //Suppression des articles    
-		$req = new SQLRequest();
 		$req->setRequest(
 			'delete from article
 			where id_article IN ('.  self::idsToString($ids) .');'

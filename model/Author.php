@@ -1,6 +1,7 @@
 <?php
 require_once 'persistence/DBUTils.php';
 require_once 'CRUDTable.php';
+require_once 'Article.php';
 
 
 class Author implements CRUDTable {
@@ -21,7 +22,7 @@ class Author implements CRUDTable {
 		
 		$req->addParameter('id', $id);
 		
-		$rs = DBUtils::read($req)->fetchAll(PDO::FETCH_ASSOC);
+		$rs = DBUtils::read($req)->fetchAll(PDO::F);
 
 		$this->affectValue($rs[0]);
 	}
@@ -67,7 +68,40 @@ class Author implements CRUDTable {
 	}
 
 	public static function delete($ids) {
-		$req = new SQLRequest();
+            //Suppression
+            
+            //Suppression des droits associés à l'auteur
+            $req = new SQLRequest();
+                 $req->setRequest(
+			'delete from droits
+			where id_auteur IN ('.  self::idsToString($ids) .');'
+			);
+                 
+                 $transaction = new Transaction();
+		$transaction->addRequest($req);
+                
+               
+                //Récupération des articles de l'auteur
+                 $req->setRequest(
+			'select id_article from article 
+                            where id_article IN 
+                            (SELECT id_article FROM redige WHERE id_auteur IN ('.  self::idsToString($ids) .'));'
+			);
+                   $articleIds=DBUtils::read($req);
+                //Suppression des articles
+                   Article::delete($articleIds->fetchAll(PDO::FETCH_COLUMN, 0));
+                   
+                
+                //Suppression des redige associés à l'auteur
+                  $req->setRequest(
+			'delete from redige
+                            WHERE id_auteur IN ('.  self::idsToString($ids) .');'
+			);
+                   $transaction = new Transaction();
+		$transaction->addRequest($req);
+                DBUtils::transaction($transaction);
+               
+                //Suppression des auteurs
 		$req->setRequest(
 			'delete from auteur
 			where id_auteur IN ('.  self::idsToString($ids) .');'
