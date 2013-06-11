@@ -3,7 +3,7 @@ require_once 'persistence/DBUTils.php';
 require_once 'CRUDTable.php';
 
 
-class Auteur implements CRUDTable {
+class Author implements CRUDTable {
 	
 	private $_id;
 	private $_identity;
@@ -43,7 +43,8 @@ class Auteur implements CRUDTable {
 				'insert into auteur (id_auteur, identite_auteur, adresse_auteur, login_auteur, pwd_auteur)
 				VALUES(:id, :identity, :address, :login, :pwd);'
 				);
-			$idParameter = 'auteur';
+			$tableId = 'auteur';
+			$req->setTableId($tableId);
 		}
 		else {
 			$req->setRequest(
@@ -78,7 +79,7 @@ class Auteur implements CRUDTable {
 		DBUtils::transaction($transaction);
 	}
 
-	public static function getArticleCount() {
+	public static function getRowCount() {
 		$req = new SQLRequest();
 		$req->setRequest(
 			'Select count(*) 
@@ -109,6 +110,19 @@ class Auteur implements CRUDTable {
 			);
 		
 		return DBUtils::read($req)->fetchAll(PDO::FETCH_ASSOC);
+	}
+	
+	public static function identityList($ids = null) {
+		
+		$req = 'Select id_auteur as id, identite_auteur as "identity"
+			from auteur';
+		if(isset($ids)){
+			$req .= ' where id_auteur IN ('. self::idsToString($ids) .')';
+		}
+		
+		$request = new SQLRequest();
+		$request->setRequest($req);
+		return DBUtils::read($request)->fetchAll(PDO::FETCH_ASSOC);
 	}
 	
 	public static function idsToString($ids) {
@@ -158,6 +172,10 @@ class Auteur implements CRUDTable {
 
 	public function setPwd($pwd) {
 		$this->_pwd = $pwd;
+	}
+
+	public static function fieldlist($fields, $start = null, $length = null) {
+		
 	}
 
 

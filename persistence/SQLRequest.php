@@ -4,6 +4,7 @@ class SQLRequest
 {
 	private $_request;
 	private $_parameters;
+	private $_tableId;
 
 	/**
 	 * Initialize attributes.
@@ -48,6 +49,30 @@ class SQLRequest
 	public function addParameter($param, $value)
 	{
 		$this->_parameters[$param] = $value;
+	}
+	
+	/**
+	 * Set the table id for an insert request.
+	 * @param String $idTable
+	 */
+	public function setTableId($tableId) {
+		$this->_tableId = $tableId;
+	}
+	
+	/**
+	 * Get the table id uses in insert request.
+	 * @return String
+	 */
+	public function getTableId() {
+		return $this->_tableId;
+	}
+	
+	/**
+	 * Test if the request is an insert request.
+	 * @return boolean
+	 */
+	public function isInsertRequest() {
+		return isset($this->_tableId);
 	}
 }
 

@@ -8,6 +8,7 @@ abstract class Controller {
 	private $_menu;
 	private $_view;
 	private $_title;
+	private $_userMessages;
 	
 	public abstract function run($action);
 	
@@ -41,6 +42,18 @@ abstract class Controller {
 	
 	public function getTitle() {
 		return $this->_title;
+	}
+
+	public function addUserMessages($messages) {
+		$this->_userMessages[] = $messages;
+	}
+
+	public function setUserMessages($messages) {
+		$this->_userMessages = $messages;
+	}
+	
+	public function getUserMessages() {
+		return $this->_userMessages;
 	}
 }
 

@@ -54,6 +54,13 @@ class FormValidator {
 								$this->addError($validator['message']);
 							}
 							break;
+						case 'sum':
+							if($this->isDifferent($values[$name], $validator['param'])) {
+								
+								$this->_isValid = false;
+								$this->addError($validator['message']);
+							}
+							break;
 					}
 				}
 			}
@@ -64,7 +71,16 @@ class FormValidator {
 
 	public function isNumber($var) {
 		
-		return is_numeric($var);
+		if(is_array($var)){
+			$isNumber = true;
+			foreach($var as $v) {
+				$isNumber &= is_numeric($v);
+			}
+			return $isNumber;
+		}
+		else {
+			return is_numeric($var);
+		}
 	}
 	
 	public function isDate($var) {
@@ -79,8 +95,21 @@ class FormValidator {
 	}
 	
 	public function isDifferent($var, $value) {
-		return $var != $value;
+		if(is_array($var)){
+			$total = 0;
+			foreach($var as $v) {
+				$total += $v;
+			}
+			return $total != $value;
+		}
+		else {
+			return $var != $value;
+		}
 	}
+	
+	/*public function equals($var, $value) {
+		return $var == $value;
+	}*/
 	
 	public function addError($error) {
 		$this->_errors[] = $error;

@@ -1,4 +1,5 @@
-<?php ?>
+<?php 
+//debug($controller);?>
 
 <form action="<?php echo BootStrap::getRequest()->getURL(null, "delete") ?>" method="POST">
 	<table>

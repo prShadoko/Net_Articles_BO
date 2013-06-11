@@ -56,7 +56,7 @@ class DBUtils
 	 * @return type
 	 * @throws Exception
 	 */
-	static public function transaction(Transaction $transaction, $idParameter = null)
+	static public function transaction(Transaction $transaction/*, $idParameter = null*/)
 	{
 		try
 		{
@@ -65,7 +65,36 @@ class DBUtils
 			$connection = self::getConnection();
 			$connection->beginTransaction();
 				
-			if(!is_null($idParameter))
+			foreach($transaction->getRequests() as $request) {
+				if($request->isInsertRequest()) {
+					$prep = $connection->prepare('SELECT inc_parametre(:param) AS `id`');
+					$parameters = array('param' => $request->getTableId());
+					$prep->execute($parameters);
+					$res = $prep->fetch(PDO::FETCH_ASSOC);
+					
+					if($res !== false)
+					{
+						$id = $res['id'];
+						$request->addParameter('id', $id);
+					}
+					else {
+						
+						$connection->rollback();
+						$connection = null;
+						throw new Exception('Quelque chose s\'est mal déroulé dans la transaction : la nouvelle clé primaire n\'a pas put être récuperé.');
+						break;
+					}
+				}
+				
+				$prep = $connection->prepare($request->getRequest());
+				$prep->execute($request->getParameters());
+			}
+			
+			$connection->commit();
+			$connection = null;
+			// --- --- ---
+			
+			/*if(!is_null($idParameter))
 			{
 				$prep = $connection->prepare('SELECT inc_parametre(:param) AS `id`');
 				$parameters = array('param' => $idParameter);
@@ -90,7 +119,7 @@ class DBUtils
 			}
 			$connection->commit();
 			$connection = null;
-			return $id; //Might be uninitialized
+			return $id; //Might be uninitialized*/
 		} catch(Exception $e)
 		{
 			$connection->rollback();

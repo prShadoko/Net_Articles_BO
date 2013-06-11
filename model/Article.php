@@ -46,7 +46,8 @@ class Article implements CRUDTable {
 				'insert into article (id_article, id_domaine, resume, titre, prix, date_article, fichier)
 				VALUES(:id, :idDomain, :summary, :title, :price, :publicationDate, :file);'
 				);
-			$idParameter = 'article';
+			$tableId = 'article';
+			$req->setTableId($tableId);
 		}
 		else {
 			$req->setRequest(
@@ -67,7 +68,7 @@ class Article implements CRUDTable {
 		$transaction = new Transaction();
 		$transaction->addRequest($req);
 		
-		DBUtils::transaction($transaction, $idParameter);
+		DBUtils::transaction($transaction);
 	}
 	
 	public static function readableList($start, $length) {
@@ -90,6 +91,17 @@ class Article implements CRUDTable {
 			'Select id_article as id, titre, date_article as "Date de publication"
 			from article
 			where id_article IN ('. self::idsToString($ids) .');'
+			);
+		
+		return DBUtils::read($req)->fetchAll(PDO::FETCH_ASSOC);
+	}
+	
+	public static function titleList() {
+
+		$req = new SQLRequest();
+		$req->setRequest(
+			'Select id_article as id, titre as title
+			from article;'
 			);
 		
 		return DBUtils::read($req)->fetchAll(PDO::FETCH_ASSOC);
@@ -118,7 +130,7 @@ class Article implements CRUDTable {
 		return substr($idList, 0, strlen($idList)-2);
 	}
 	
-	public static function getArticleCount() {
+	public static function getRowCount() {
 		$req = new SQLRequest();
 		$req->setRequest(
 			'Select count(*) 
@@ -184,6 +196,29 @@ class Article implements CRUDTable {
 
 	public function setFile($file) {
 		$this->_file = $file;
+	}
+
+	public static function fieldlist($fields, $start = null, $length = null) {
+		$fieldList = '';
+		
+		foreach ($fields as $name => $field){
+			$fieldList .= $field.' as "'.$name.'", ';
+		}
+		
+		$fieldList = substr($fieldList, 0, strlen($fieldList)-2);
+		
+		$req = 'Select '.$fieldList.'
+			from article
+			order by id_article ASC';
+		
+			if(	isset($start) && isset($length) ) {
+				$req .= ' limit '.$start.', '.$length;
+			}
+		
+		$request = new SQLRequest();
+		$request->setRequest($req.';');
+		
+		return DBUtils::read($request)->fetchAll(PDO::FETCH_ASSOC);
 	}
 }
 

@@ -29,8 +29,15 @@ interface CRUDTable {
 	/**
 	 * Must be return a list of significants fields from DB.
 	 * @param Array $ids Identifiants of entries.
+	 * @deprecated since version number
 	 */
 	public static function significantFieldList($ids);
+	
+	/**
+	 * Must be return a list of fields from DB.
+	 * @param Array $fields Array (name => field) of entries.
+	 */
+	public static function fieldlist($fields, $start = null, $length = null);
 	
 	/**
 	 * Must delete entries to DB.
@@ -41,7 +48,7 @@ interface CRUDTable {
 	/**
 	 * Must get the count of articles from the DB.
 	 */
-	public static function getArticleCount();
+	public static function getRowCount();
 	
 }
 

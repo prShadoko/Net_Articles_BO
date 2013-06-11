@@ -22,5 +22,16 @@ $controller = BootStrap::getController();
 		<article>
 		<?php require_once 'view/' .$controller->getView() . '.php'; ?>
 		</article>
+		
+		<?php
+		$messages = BootStrap::getController()->getUserMessages();
+		echo '<p><ul>';
+		if(!is_null($messages)) {
+			foreach ($messages as $m) {
+				echo '<li>'.$m.'</li>';
+			}
+		}
+		echo '</ul></p>';
+		?>
 	</body>
 </html>

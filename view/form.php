@@ -17,17 +17,3 @@ if(!is_null($controller->getDataId())) {
 	<input type="submit" name="submit" value="Envoyer" />
 </form>
 
-
-<p>
-	<ul>
-	<?php
-	$messages = BootStrap::getController()->getUserMessages();
-	
-	if(isset($messages)) {
-		foreach ($messages as $m) {
-			echo '<li>'.$m.'</li>';
-		}
-	}
-	?>
-	</ul>
-</p>

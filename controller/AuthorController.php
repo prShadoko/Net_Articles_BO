@@ -1,8 +1,8 @@
 <?php
-require_once 'CRUDController.php';
-require_once 'model/Auteur.php';
+require_once 'PlainCRUDController.php';
+require_once 'model/Author.php';
 
-class AuteurController extends CRUDController {
+class AuthorController extends PlainCRUDController {
 	
 	private $_auteur;
 	
@@ -17,24 +17,24 @@ class AuteurController extends CRUDController {
 	}
 
 	protected function defineDeletedRows($ids) {
-		return $rows = Auteur::significantFieldList($ids);
+		return $rows = Author::significantFieldList($ids);
 	}
 
 	protected function definePageCount() {
-		$pageCount = ceil(Auteur::getArticleCount() / self::$length);
+		$pageCount = ceil(Author::getRowCount() / self::$length);
 
 		return $pageCount;
 	}
 
 	protected function defineRows($start, $length) {
 
-		$rows = Auteur::readableList($start, $length);
+		$rows = Author::readableList($start, $length);
 
 		return $rows;
 	}
 
 	protected function deleteRows($ids) {
-		Auteur::delete($ids);
+		Author::delete($ids);
 	}
 
 	protected function getUserConfirmationMessage() {
@@ -42,7 +42,7 @@ class AuteurController extends CRUDController {
 	}
 
 	protected function initModel() {
-		$this->_auteur = new Auteur();
+		$this->_auteur = new Author();
 	}
 
 	protected function updateDB() {

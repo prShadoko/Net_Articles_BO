@@ -1,10 +1,10 @@
 <?php
 
-require_once 'CRUDController.php';
+require_once 'PlainCRUDController.php';
 require_once 'model/Article.php';
 require_once 'model/Domain.php';
 
-class ArticleController extends CRUDController {
+class ArticleController extends PlainCRUDController {
 
 	private $_article;
 	private $_domainList;
@@ -20,7 +20,7 @@ class ArticleController extends CRUDController {
 
 	protected function definePageCount() {
 
-		$pageCount = ceil(Article::getArticleCount() / self::$length);
+		$pageCount = ceil(Article::getRowCount() / self::$length);
 
 		return $pageCount;
 	}
