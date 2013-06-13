@@ -17,7 +17,6 @@ abstract class PlainCRUDController extends CRUDController {
 
 	protected function read() {
 		
-		//$this->setView('read');
 		$this->_pageCount = $this->definePageCount();
 		$this->initPagination();
 
@@ -30,19 +29,10 @@ abstract class PlainCRUDController extends CRUDController {
 		
 		$params = BootStrap::getRequest()->getParameters();
 
-		//$this->init();
 		$this->initModel();
 
 		if (isset($params['submit'])) { // the form has been submited.
 			$this->formSubmission($params);
-			/*$this->formValidation();
-
-			if ($this->_isValid) {
-				$this->_article->updateDB();
-				header('location: ' . BootStrap::getRequest()->getURL(null, 'read')); //TODO: gérer la creation dans la classe mère, faire une fct pour gerer le model, une autre pour mettre a jour la BDD, une autre pour le message client et pour créer les validateurs
-			} else {
-				$this->_userMessages = $validator->getErrors();
-			}*/
 		}
 	}
 
@@ -56,38 +46,30 @@ abstract class PlainCRUDController extends CRUDController {
 			throw new InvalidArgumentException('L\'id n\'est pas définie');
 		}
 		$id = $params['id'];
-		//$this->setView($this->g);
-		//$this->_article = new Article();
-		//$this->_domainList = Domain::getDomainList();
 		$this->initModel();
 
-		if (isset($params['submit'])) { // the form has been submited.
-			/*//$this->formValidation();
-			//$this->_article->affectValue($params);
-			$this->updateModelByRequest($params);
-
-			$validator = $this->createValidator();
-			$this->_isValid = $validator->validate($params);
-
-			if ($this->_isValid) {
-				//$this->_article->updateDB();
-				$this->updateDB();
-				//$this->_userMessages[] = 'L\'article a correctement été enregistré.';
-				$this->_userMessages[] = $this->getUserConfirmationMessage();
-			} else {
-				$this->_userMessages = $validator->getErrors();
-			}*/
+		if (isset($params['submit'])) { 
 			$this->formSubmission($params);
 		} else {
 			$this->updateModelById($id);
-			//$this->_article->read($id);
 		}
 	}
 	
 	protected function delete() {
-		//$this->setView('delete');
+		
 		$request = BootStrap::getRequest();
 		$params = $request->getParameters();
+		
+		if(isset($params['create'])) {
+			header('location: '. $request->getURL(null, 'create'));
+			exit;
+		}
+		
+		if(!isset($params['ids'])) {
+			header('location: '. $request->getURL(null, 'read'));
+			exit;
+		}
+		//$this->setView('delete');
 		
 		if (!isset($params['ids'])) {
 			throw new InvalidArgumentException('Aucun élément n\'a été selectionné.');
@@ -134,8 +116,10 @@ abstract class PlainCRUDController extends CRUDController {
 			$this->updateDB();
 			//$this->_userMessages[] = 'L\'article a correctement été enregistré.';
 			$this->addUserMessages($validator->getConfirmMessage());
+			$this->isAnErrorMessage(false);
 		} else {
 			$this->setUserMessages( $validator->getErrors() );
+			$this->isAnErrorMessage(true);
 		}
 	}
 

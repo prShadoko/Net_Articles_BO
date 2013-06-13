@@ -5,7 +5,8 @@ $authorList = $controller->getAuthorList();
 $ids = Array();
 
 ?>
-<form action="<?php echo BootStrap::getRequest()->getURL(null, 'update', Array('id'=>$controller->getArticle())); ?>" method="POST" >
+<h2><?php echo $controller->getArticle()->getTitle(); ?></h2>
+<form action="<?php echo BootStrap::getRequest()->getURL(null, 'update', Array('id'=>$controller->getArticle()->getId())); ?>" method="POST" >
 	<table>
 	<?php 
 		foreach($rows as $row) {
@@ -35,6 +36,8 @@ $ids = Array();
 		}
 	?>
 	</table>
-	<input type="submit" name="validate" value="Valider" />
-	<input type="submit" name="create" value="Retour" />
+	<div id="control">
+		<input type="submit" name="create" value="Retour" />
+		<input type="submit" name="validate" value="Valider" />
+	</div>
 </form>

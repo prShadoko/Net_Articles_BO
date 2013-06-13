@@ -1,4 +1,7 @@
 <form action="<?php echo BootStrap::getRequest()->getURL(null, "update") ?>" method="POST">
+	<div id="control">
+		<input type="submit" value="Calcul des droits">
+	</div>
 	<table>
 		<?php
 		$controller = BootStrap::getController();
@@ -26,15 +29,15 @@
 		?>
 
 	</table>
-	<input type="submit" value="Calcul des droits">
 </form>
 
-<p>
+<p id="pagination">
 	<?php 
 	$request = BootStrap::getRequest();
 	$length = 5 - 1;
 	$page = $controller->getPage();  
 	$pageCount = $controller->getPageCount();
+	
 	
 	$start = $page - floor($length/2);
 	if($start > $pageCount - $length){

@@ -66,11 +66,14 @@ class RedactionController extends CRUDController {
 			exit;
 		}
 		
-		if(isset($params['create'])) {
+		if(isset($params['create']) || !isset($params['authors'])) {
 			header('location: '. BootStrap::getRequest()->getURL(null, 'create', Array('id'=>$params['id'])));
 			exit;
 		}
 		
+		$this->_article = new Article();
+		$this->_article->read($params['id']);
+				
 		if(isset($params['validate'])) {
 			$parts = $params['parts'];
 			$totalPart = 0;
@@ -92,19 +95,18 @@ class RedactionController extends CRUDController {
 					}
 				}
 				
-				Redaction::updateDB($params['id'], $authors, $parts);
+				
+				Redaction::updateDB($this->_article->getId(), $authors, $parts);
 				
 				header('location: '.BootStrap::getRequest()->getURL(null,'read', Array('id'=>$params['id'])));
 			}
-			//debug($validator->getErrors());
-			//$avlidator 
 		}
 		
 		$this->setView('redactionUpdate');
 		
-		$this->_article = $params['id'];
+		//$this->_article = $params['id'];
 		
-		$this->_rows = Redaction::significantFieldList($params['id'], $params['authors']);//Author::significantFieldList($params['authors']);
+		$this->_rows = Redaction::significantFieldList($this->_article->getId(), $params['authors']);//Author::significantFieldList($params['authors']);
 		
 		$this->_authorList = Author::identityList($params['authors']);
 		
@@ -117,9 +119,11 @@ class RedactionController extends CRUDController {
 		
 		if($validator->validate($rs)) {
 			$this->setUserMessages($validator->getConfirmMessage());
+			$this->isAnErrorMessage(false);
 		}
 		else {
 			$this->setUserMessages($validator->getErrors());
+			$this->isAnErrorMessage(true);
 		}
 		
 		return $validator;

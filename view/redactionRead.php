@@ -12,7 +12,7 @@ else {
 }
 ?>
 
-<form action="<?php echo BootStrap::getRequest()->getURL(null,null) ?>" method="POST">
+<form action="<?php echo BootStrap::getRequest()->getURL(null,null) ?>" method="POST" id="control">
 	<select name="id">
 		<?php
 		foreach ($controller->getArticleList() as $article) {

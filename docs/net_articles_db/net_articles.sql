@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 12, 2013 at 05:46 PM
+-- Generation Time: Jun 13, 2013 at 04:40 PM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `article` (
 --
 
 INSERT INTO `article` (`id_article`, `id_domaine`, `titre`, `resume`, `prix`, `date_article`, `fichier`) VALUES
-(1, 1, 'Le modèle relationnel', 'Le modèle relationnel est basé sur une organisation des données sous forme de tables. La manipulation des données se fait selon le concept mathématique de relation de la théorie des ensembles, c''est-à-dire l''algèbre relationnelle. L''algèbre relationnelle a été inventée en 1970 par E.F. Codd, le directeur de recherche du centre IBM de San José. Elle est constituée d''un ensemble d''opérations formelles sur les relations. Les opérations relationnelles permettent de créer une nouvelle relation (table) à partir d''opérations élémentaires sur d''autres tables (par exemple l''union, l''intersection, ou encore la différence)...	', 7.00, '2004-01-20', 'modelerelationnel.pdf'),
+(1, 1, 'Le modèle relationnel', 'Le modèle relationnel est basé sur une organisation des données sous forme de tables. La manipulation des données se fait selon le concept mathématique de relation de la théorie des ensembles, c''est-à-dire l''algèbre relationnelle. L''algèbre relationnelle a été inventée en 1970 par E.F. Codd, le directeur de recherche du centre IBM de San José. Elle est constituée d''un ensemble d''opérations formelles sur les relations. Les opérations relationnelles permettent de créer une nouvelle relation (table) à partir d''opérations élémentaires sur d''autres tables (par exemple l''union, l''intersection, ou encore la différence)...	', 5.00, '2004-01-26', 'modelerelationnel.pdf'),
 (2, 1, 'La notion de SGBD', 'Une base de données (son abréviation est BD ou BDD, en anglais DB, database) est une entité dans laquelle il est possible de stocker des données de façon structurée et avec le moins de redondance possible. Ces données doivent pouvoir être utilisées par des programmes, par des utilisateurs différents. Ainsi, la notion de base de données est généralement couplée à celle de réseau, afin de pouvoir mettre en commun ces informations, d''où le nom de base. On parle généralement de système d''information pour désigner toute la structure regroupant les moyens mis en place pour pouvoir partager des données ...									', 6.00, '2002-03-31', 'notion_SGBD.pdf'),
 (3, 5, 'Le concept de système d''exploitation', 'Pour qu''un ordinateur soit capable de faire fonctionner un programme informatique (appelé parfois application ou logiciel), la machine doit être en mesure d''effectuer un certain nombre d''opérations préparatoires afin d''assurer les échanges entre le processeur, la mémoire, et les ressources physiques (périphériques). 	', 6.00, '2003-04-09', 'systeme_exploitation.pdf'),
 (4, 1, 'Le langage SQL', 'SQL (Structured Query Language, traduisez Langage de requêtes structuré) est un langage de définition de données (LDD, ou en anglais DDL Data Definition Language), un langage de manipulation de données (LMD, ou en anglais DML, Data Manipulation Language), et un langage de contrôle de données (LCD, ou en anglais DCL, Data Control Language), pour les bases de données relationnelles ...			', 10.00, '2003-10-19', 'langage_SQL.pac'),
@@ -359,19 +359,6 @@ CREATE TABLE IF NOT EXISTS `droits` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `droits`
---
-
-INSERT INTO `droits` (`id_auteur`, `annee`, `trimestre`, `etat_droits`, `montants_droits`) VALUES
-(1, 2004, 4, 'C', 48.00),
-(2, 2004, 4, 'C', 46.00),
-(2, 2005, 1, 'C', 12.00),
-(3, 2004, 4, 'C', 25.00),
-(3, 2005, 1, 'C', 12.00),
-(4, 2004, 4, 'C', 56.00),
-(6, 2004, 4, 'C', 20.00);
-
---
 -- Triggers `droits`
 --
 DROP TRIGGER IF EXISTS `tbi_droits`;
@@ -442,12 +429,14 @@ CREATE TABLE IF NOT EXISTS `redige` (
 INSERT INTO `redige` (`id_article`, `id_auteur`, `part`) VALUES
 (1, 2, 100),
 (2, 2, 50),
-(2, 4, 50),
+(2, 4, 25),
+(2, 6, 25),
 (3, 1, 100),
 (4, 3, 100),
 (5, 2, 50),
 (5, 5, 50),
-(6, 5, 100),
+(6, 3, 30),
+(6, 5, 70),
 (7, 2, 100),
 (8, 1, 20),
 (8, 2, 10),

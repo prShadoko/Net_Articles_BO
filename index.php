@@ -12,6 +12,7 @@ $controller = BootStrap::getController();
 <html lang="fr">
 	<head>
 		<meta charset="utf-8">
+		<link rel="stylesheet" href="view/Styles.css">
 		<title><?php echo $controller->getTitle(); ?></title>
 	</head>
 	<body>
@@ -25,13 +26,18 @@ $controller = BootStrap::getController();
 		
 		<?php
 		$messages = BootStrap::getController()->getUserMessages();
-		echo '<p><ul>';
+		$typeMessage = 'message';
+		if($controller->isAnErrorMessage()) {
+			$typeMessage = 'erreur';
+		}
+		
 		if(!is_null($messages)) {
+			echo '<p><ul id="'.$typeMessage.'">';
 			foreach ($messages as $m) {
 				echo '<li>'.$m.'</li>';
 			}
+			echo '</ul></p>';
 		}
-		echo '</ul></p>';
 		?>
 	</body>
 </html>

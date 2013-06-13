@@ -11,14 +11,19 @@ class RightController extends Controller {
 	private static $length = 6;
 
 	public function run($action) {
-		//$params = BootStrap::getRequest()->getParameters;
 		
 		if($action == 'update') {
 			Right::update();
 		}
 		
 		$this->initPagination();
-		$this->setRows(Right::readableList(($this->getPage() - 1) * self::$length, self::$length));
+		if($this->_pageCount == 0) {
+			$this->setRows(Array(Array()));
+		}
+		else {
+			$this->setRows(Right::readableList(($this->getPage() - 1) * self::$length, self::$length));
+		}
+		
 	}
 	
 	public function initPagination() {

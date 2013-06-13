@@ -37,12 +37,14 @@
 		?>
 
 	</table>
-	<a href="<?php echo BootStrap::getRequest()->getURL(null, 'create'); ?>"><input type="button" value="Créer" ></a>
-	<input type="submit" value="Supprimer">
-	<input type="reset" value="Vider">
+	<div id="control">
+		<input type="submit" name="create" value="Créer" >
+		<input type="submit" name="delete" value="Supprimer">
+		<input type="reset" value="Vider">
+	</div>
 </form>
 
-<p>
+<p id="pagination">
 	<?php 
 	$request = BootStrap::getRequest();
 	$length = 5 - 1;

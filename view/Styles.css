@@ -1,0 +1,199 @@
+/*
+    Document   : Styles
+    Created on : May 27, 2013, 1:15:30 AM
+    Author     : tom
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root {
+    display: block;
+}
+
+/*global*/
+body {
+	font-family: cantarell, sans-serif;
+	margin: auto;
+	width: 90%;
+}
+
+h1, h2, h3 {
+	text-align: center;
+}
+
+article {
+	background-color: rgb(237, 236, 235);
+	border-bottom-left-radius: 1.5em;
+	border-bottom-right-radius: 1.5em;
+	padding: 1em 1em;
+	text-align: center;
+}
+
+table {
+	border-spacing: 1em 0em;
+}
+
+th {
+	font-weight: bold;
+	text-align: center;
+	vertical-align: text-top;
+}
+
+#erreur, #message {
+	border-radius: 0.4em;
+	line-height: 2em;
+	text-align: center;
+	margin: auto;
+	margin-bottom: 1em;
+	width: 35%;
+}
+
+#erreur {
+	background-color: tomato;
+	border: darkred 2px solid;
+}
+
+#message {
+	background-color: lightgreen;
+	border: forestgreen 2px solid;
+}
+
+#pagination {
+	
+	text-align: center;
+}
+
+table {
+	
+	margin: auto;
+	text-align: center;
+}
+
+#control {
+	
+	text-align: center;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+form
+{
+	display: inline-block;
+	margin: auto;
+	text-align: left;
+}
+
+label
+{
+    display: block;
+    width: 150px;
+    float: left;
+}
+
+/*Rubriques.php*/
+nav {
+	background-color: midnightblue;
+	border-top-left-radius: 1.5em;
+	border-top-right-radius: 1.5em;
+	color: grey;
+	height: 3em;
+	width: 100%;
+}
+
+nav ul {
+	text-align: center;
+	padding: 0;
+}
+
+nav li {
+	display: inline-block;
+	line-height: 3em;
+	list-style: none outside;
+	margin: auto 10px;
+	width: 10em;
+}
+
+nav li img {
+	margin-right: 0.3em;
+	vertical-align: text-top;
+}
+
+nav a, nav a:hover, nav a:visited {
+	color: white;
+	display: inline-block;
+	height: 100%;
+	text-decoration: none;
+	width: 100%;
+}
+
+nav a:hover {
+	border-radius: 0.0em;
+	background-color: cornflowerblue;
+}
+
+nav #selected {
+	border-radius: 0.0em;
+	background-color: slateblue;
+}
+
+nav + * {
+	clear: left;
+}
+
+/*DetailArticle.php*/
+.detailArticle td {
+	text-align: justify;
+}
+
+/*Connexion.php*/
+#tConnexion {
+	margin: auto;
+}
+
+#tConnexion td[colspan] {
+	text-align: center;
+}
+
+/*Compte.php*/
+#tCompte {
+	margin: auto;
+}
+
+#tCompte td[colspan] {
+	text-align: center;
+}
+
+/*Panier.php*/
+#tPanier {
+	margin: auto;
+}
+
+#tPanier tr:first-child th {
+	text-align: center;
+}
+
+#tPanier td[colspan] {
+	text-align: center;
+}
+
+/*Rechercher.php*/
+#tDomaine {
+	margin: auto;
+}
+
+#tDomaine td[colspan] {
+	text-align: center;
+}
+
+/*ListeArticles.php*/
+#tArticles {
+	margin: auto;
+}
+
+#tArticles tr:first-child th {
+	text-align: center;
+}
+
+#tArticles td[colspan] {
+	text-align: center;
+}

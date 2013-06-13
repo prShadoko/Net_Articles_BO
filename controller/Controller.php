@@ -8,7 +8,9 @@ abstract class Controller {
 	private $_menu;
 	private $_view;
 	private $_title;
+	private $_subTitle;
 	private $_userMessages;
+	private $_isAnErrorMessage;
 	
 	public abstract function run($action);
 	
@@ -43,6 +45,14 @@ abstract class Controller {
 	public function getTitle() {
 		return $this->_title;
 	}
+	
+	public function setSubTitle($subTitle) {
+		$this->_subTitle = $subTitle;
+	}
+	
+	public function getSubTitle() {
+		return $this->_subTitle;
+	}
 
 	public function addUserMessages($messages) {
 		$this->_userMessages[] = $messages;
@@ -54,6 +64,15 @@ abstract class Controller {
 	
 	public function getUserMessages() {
 		return $this->_userMessages;
+	}
+	
+	public function isAnErrorMessage($bool = null){
+		if($bool === null) {
+			return $this->_isAnErrorMessage;
+		}
+		else {
+			$this->_isAnErrorMessage = $bool;
+		}
 	}
 }
 

@@ -12,8 +12,8 @@ if(!is_null($controller->getDataId())) {
 	<?php 
 	require_once $controller->getForm().'.php';
 	?>
-	
-	<input type="reset" value="Vider" />
-	<input type="submit" name="submit" value="Envoyer" />
+	<div id="control">
+		<input type="submit" name="submit" value="Envoyer" />
+	</div>
 </form>
 

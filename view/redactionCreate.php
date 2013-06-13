@@ -34,5 +34,7 @@ $authorList = $controller->getAuthorList();
 		?>
 		</tr>
 	</table>
-	<input type="submit" name="update" value="Continuer" />
+	<div id="control">
+		<input type="submit" name="update" value="Continuer" />
+	</div>
 </form>
