@@ -7,10 +7,6 @@ $confirm = $controller->isConfirmForm();
 
 <h2>
 	<?php if($confirm) {
-            if($controller->getName()=="author") {
-                echo "Etes vous sur de vouloir supprimer cet auteur ? Les articles écris par cet auteur seront aussi supprimées.";
-            }
-            else
 		echo 'Etes vous sur de vouloir supprimer ces données ?';
 	}
 	else {
