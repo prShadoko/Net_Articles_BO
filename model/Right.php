@@ -8,7 +8,7 @@ class Right {
 	public static function update() {
 		
 		$req = 'insert into droits (id_auteur, annee, trimestre, etat_droits, montants_droits)
-		select au.id_auteur, year(ac.date_achat) as annee, quarter(ac.date_achat) as trimestre, "C" as etat_droits, sum(ar.prix) as montants_droits
+		select au.id_auteur, year(ac.date_achat) as annee, quarter(ac.date_achat) as trimestre, "C" as etat_droits, sum(ar.prix * r.part / 100) as montants_droits
 		from auteur au
 		join redige r on r.id_auteur = au.id_auteur
 		join article ar on ar.id_article = r.id_article
